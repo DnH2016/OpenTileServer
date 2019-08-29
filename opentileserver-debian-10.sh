@@ -95,7 +95,7 @@ function style_osm_bright(){
 }
 
 function install_npm_carto(){
-# 	not available in Debain 9
+# 	not available in Debian 9
 #	apt-get -y install npm nodejs
 	npm install -g carto@1.0.1
 	ln -sf /usr/lib/nodejs/carto/bin/carto /usr/local/bin/carto
@@ -447,7 +447,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get clean
 
 #needed for a lot of packages!
-apt install -y software-properties-common && add-apt-repository universe
+#apt install -y software-properties-common && add-apt-repository universe
 
 apt-get -y install	libboost-dev subversion git tar unzip wget bzip2 \
 					build-essential autoconf libtool libxml2-dev libgeos-dev \
@@ -458,21 +458,26 @@ apt-get -y install	libboost-dev subversion git tar unzip wget bzip2 \
 					ttf-unifont fonts-arphic-ukai fonts-arphic-uming fonts-thai-tlwg \
 					lua-rrd-dev lua-rrd libgeotiff2 node-carto \
 					postgresql postgresql-contrib postgis postgresql-9.6-postgis-2.3 \
-					php libapache2-mod-php php7.3-xml
+					php libapache2-mod-php php7.3-xml curl
 
 #for debian 10  postgresql-10-postgis-2.4 replaced with postgresql-9.6-postgis2.3 
 #               php7.2-xml replaced with php-xml
-
+#		added curl
 PG_VER=$(pg_config | grep '^VERSION' | cut -f4 -d' ' | cut -f1,2 -d.)
 PG_MAJOR=${PG_VER%.*}
 
 apt get update && apt-get install git-core curl build-essential openssl libssl-dev
+
+
 
 #install node.js 
 git clone https://github.com/nodejs/node && cd node && ./configure && make && make install && node -v
 #install npm
 curl -L https://npmjs.org/install.sh | sh 
 
+#Install nodejs and npm - this didn't work in stretch
+#curl -sL https://deb.nodesource.com/setup_12.x | bash -
+#apt-get install -y nodejs
 
 create_system_user;
 install_mapnik;
