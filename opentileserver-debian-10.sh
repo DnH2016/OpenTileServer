@@ -471,9 +471,9 @@ apt get update && apt-get install git-core curl build-essential openssl libssl-d
 
 
 #install node.js 
-git clone https://github.com/nodejs/node && cd node && ./configure && make && make install && node -v
+#git clone https://github.com/nodejs/node && cd node && ./configure && make && make install && node -v
 #install npm
-curl -L https://npmjs.org/install.sh | sh 
+#curl -L https://npmjs.org/install.sh | sh 
 
 #Install nodejs and npm - this didn't work in stretch
 #curl -sL https://deb.nodesource.com/setup_12.x | bash -
