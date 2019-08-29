@@ -173,7 +173,7 @@ function create_system_user(){
 		echo "${OSM_USER} pass: ${OSM_USER_PASS}" >> /root/auth.txt
 	fi
 
-	cat >/etc/postgresql/${PG_VER%.*}/main/pg_hba.conf <<CMD_EOF
+	cat >/etc/postgresql/9.6/main/pg_hba.conf <<CMD_EOF
 local all all trust
 host all all 127.0.0.1 255.255.255.255 md5
 host all all 0.0.0.0/0 md5
@@ -458,7 +458,7 @@ apt-get -y install	libboost-dev subversion git tar unzip wget bzip2 \
 					ttf-unifont fonts-arphic-ukai fonts-arphic-uming fonts-thai-tlwg \
 					lua-rrd-dev lua-rrd libgeotiff2 node-carto \
 					postgresql postgresql-contrib postgis postgresql-9.6-postgis-2.3 \
-					php libapache2-mod-php php7.3-xml curl
+					php libapache2-mod-php php-xml curl
 
 #for debian 10  postgresql-10-postgis-2.4 replaced with postgresql-9.6-postgis2.3 
 #               php7.2-xml replaced with php-xml
@@ -466,7 +466,7 @@ apt-get -y install	libboost-dev subversion git tar unzip wget bzip2 \
 PG_VER=$(pg_config | grep '^VERSION' | cut -f4 -d' ' | cut -f1,2 -d.)
 PG_MAJOR=${PG_VER%.*}
 
-apt get update && apt-get install git-core curl build-essential openssl libssl-dev
+apt-get update && apt-get install git-core curl build-essential openssl libssl-dev
 
 
 
