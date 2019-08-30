@@ -88,7 +88,7 @@ function style_osm_bright(){
 		./make.py
 		cd ../OSMBright/
 
-		npm install -g carto@1.0.1
+		npm install -y -g carto@1.0.1
 		carto project.mml > OSMBright.xml
 	fi
 	OSM_STYLE_XML='/usr/local/share/maps/style/OSMBright/OSMBright.xml'
@@ -403,9 +403,9 @@ CMD_EOF
 
 function tune_system(){
 
-	sed -i 's/#\?shared_buffers.*/shared_buffers = 128MB/' /etc/postgresql/${PG_MAJOR}/main/postgresql.conf
-	sed -i 's/#\?checkpoint_segments.*/checkpoint_segments = 20/' /etc/postgresql/${PG_MAJOR}/main/postgresql.conf
-	sed -i 's/#\?maintenance_work_mem.*/maintenance_work_mem = 256MB/' /etc/postgresql/${PG_MAJOR}/main/postgresql.conf
+	sed -i 's/#\?shared_buffers.*/shared_buffers = 128MB/' /etc/postgresql/9.6/main/postgresql.conf
+	sed -i 's/#\?checkpoint_segments.*/checkpoint_segments = 20/' /etc/postgresql/9.6/main/postgresql.conf
+	sed -i 's/#\?maintenance_work_mem.*/maintenance_work_mem = 256MB/' /etc/postgresql/9.6/main/postgresql.conf
 
 	if [ $(grep -c 'kernel.shmmax=268435456' /etc/sysctl.conf) -eq 0 ]; then
 		echo '# Increase kernel shared memory segments - needed for large databases
@@ -416,8 +416,8 @@ function tune_system(){
 
 function load_data(){
 	#Turn off autovacuum and fsync during load of PBF
-	sed -i 's/#\?fsync.*/fsync = off/' /etc/postgresql/${PG_MAJOR}/main/postgresql.conf
-	sed -i 's/#\?autovacuum.*/autovacuum = off/' /etc/postgresql/${PG_MAJOR}/main/postgresql.conf
+	sed -i 's/#\?fsync.*/fsync = off/' /etc/postgresql/9.6/main/postgresql.conf
+	sed -i 's/#\?autovacuum.*/autovacuum = off/' /etc/postgresql/9.6/main/postgresql.conf
 
 	systemctl restart postgresql
 
@@ -437,8 +437,8 @@ function load_data(){
 	fi
 
 	#Turn on autovacuum and fsync after load of PBF
-	sed -i.save 's/#\?fsync.*/fsync = on/' /etc/postgresql/${PG_MAJOR}/main/postgresql.conf
-	sed -i.save 's/#\?autovacuum.*/autovacuum = on/' /etc/postgresql/${PG_MAJOR}/main/postgresql.conf
+	sed -i.save 's/#\?fsync.*/fsync = on/' /etc/postgresql/9.6/main/postgresql.conf
+	sed -i.save 's/#\?autovacuum.*/autovacuum = on/' /etc/postgresql/9.6/main/postgresql.conf
 }
 
 #Steps
@@ -449,7 +449,7 @@ apt-get clean
 #needed for a lot of packages!
 #apt install -y software-properties-common && add-apt-repository universe
 
-apt-get -y install	libboost-dev subversion git tar unzip wget bzip2 \
+apt-get -y install	                libboost-dev subversion git tar unzip wget bzip2 \
 					build-essential autoconf libtool libxml2-dev libgeos-dev \
 					libgeos++-dev libpq-dev libbz2-dev libproj-dev munin-node \
 					munin libprotobuf-c-dev protobuf-c-compiler libfreetype6-dev \
@@ -458,7 +458,7 @@ apt-get -y install	libboost-dev subversion git tar unzip wget bzip2 \
 					ttf-unifont fonts-arphic-ukai fonts-arphic-uming fonts-thai-tlwg \
 					lua-rrd-dev lua-rrd libgeotiff2 node-carto \
 					postgresql postgresql-contrib postgis postgresql-9.6-postgis-2.3 \
-					php libapache2-mod-php php-xml curl
+					php libapache2-mod-php php-xml curl sudo
 
 #for debian 10  postgresql-10-postgis-2.4 replaced with postgresql-9.6-postgis2.3 
 #               php7.2-xml replaced with php-xml
@@ -495,7 +495,7 @@ ldconfig
 enable_osm_updates
 
 #tiles need to have access without password
-sed -i 's/local all all.*/local all all trust/'  /etc/postgresql/${PG_MAJOR}/main/pg_hba.conf
+sed -i 's/local all all.*/local all all trust/'  /etc/postgresql/9.6/main/pg_hba.conf
 
 #Restart services
 systemctl daemon-reload
