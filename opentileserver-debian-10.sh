@@ -1,4 +1,4 @@
-#!/bin/bash -e
+_#!/bin/bash -e
 #Version: 0.5.1
 #For use on clean Ubuntu 18 only!!!
 #Cited, Inc. Wilmington, Delaware
@@ -433,7 +433,8 @@ function load_data(){
 	sudo -u ${OSM_USER} osm2pgsql ${osm2pgsql_OPTS} -C ${C_MEM} ${PBF_FILE}
 
 	if [ $? -eq 0 ]; then	#If import went good
-		rm -rf ${PBF_FILE}
+		#rm -rf ${PBF_FILE}
+                echo "File Already There"
 	fi
 
 	#Turn on autovacuum and fsync after load of PBF
@@ -473,11 +474,12 @@ apt-get update && apt-get install git-core curl build-essential openssl libssl-d
 #install node.js 
 #git clone https://github.com/nodejs/node && cd node && ./configure && make && make install && node -v
 #install npm
-#curl -L https://npmjs.org/install.sh | sh 
+curl -L https://npmjs.org/install.sh | sh 
 
 #Install nodejs and npm - this didn't work in stretch
-#curl -sL https://deb.nodesource.com/setup_12.x | bash -
-#apt-get install -y nodejs
+apt-get install -y pgpgpg
+curl -sL https://deb.nodesource.com/setup_12.x | bash 
+apt-get install -y nodejs
 
 create_system_user;
 install_mapnik;
